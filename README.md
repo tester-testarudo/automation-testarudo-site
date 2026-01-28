@@ -38,7 +38,7 @@ Asegúrate de tener instalado Node.js.
 ### 1️⃣ Clonar el repositorio
 
 ```bash
-git clone https://github.com/fcornejv/test-playwright-testarudo.git
+git clone https://github.com/tester-testarudo/automation-testarudo-site.git
 cd test-playwright-testarudo
 ```
 
