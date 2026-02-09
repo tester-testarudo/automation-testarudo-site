@@ -13,5 +13,4 @@ test('Smoke Test - Formulario de Contacto',async({ page }) => {
     await page.locator('button[name="submit_form"], input[type="submit"]').click();
     const mensajeExito = page.getByText('Gracias por tu mensaje. Me comunicaré contigo pronto.'); 
     await expect(mensajeExito).toBeVisible();
-
 })
