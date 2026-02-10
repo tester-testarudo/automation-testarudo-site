@@ -17,12 +17,12 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    
+
     # 1. Ejecución de los tests
     - name: Run Playwright tests
       run: npx playwright test --project=chromium --project=firefox --project=webkit
-      
-   # 2. Generar Reporte Ejecutivo de QA
+
+    # 2. Generar Reporte Ejecutivo de QA
     - name: Generar Resumen QA
       if: always()
       run: |
