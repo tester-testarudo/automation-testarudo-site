@@ -20,8 +20,11 @@ jobs:
     
     # 1. Ejecución de los tests
     - name: Run Playwright tests
-      run: npx playwright test --project=chromium --project=firefox --project=webkit
-      
+      run: npx playwright test --project=chromium --project=firefox --project=webkit --reporter=html,junit,json
+      env:
+        PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
+        PLAYWRIGHT_JSON_OUTPUT_NAME: test-results/results.json
+
    # 2. Generar Reporte Ejecutivo de QA
     - name: Generar Resumen QA
       if: always()
@@ -50,8 +53,20 @@ jobs:
         echo "🔗 Estado Final: $( [ "$FALLOS" -eq 0 ] && echo "PASS ✅" || echo "FAIL ❌" )"
         echo "===================================================="
         # --------------------------
+          
+    # 3. Webhook para Regresiones (Slack)
+    - name: Notificar a Slack
+      if: always()
+      run: |
+        npm install axios ts-node
+        npx ts-node scripts/slack-notify.ts
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        GITHUB_RUN_ID: ${{ github.run_id }}
+        GITHUB_REF_NAME: ${{ github.ref_name }}
 
-    # 3. Recolección de evidencias para reportes y Excel
+    # 4. Recolección de evidencias para reportes y Excel
     - name: Subir reportes y resultados para Excel
       uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }} # Se ejecuta siempre, incluso si hay fallos, para no perder la evidencia
