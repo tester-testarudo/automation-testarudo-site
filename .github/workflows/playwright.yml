@@ -18,14 +18,14 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     
-    # 1. Ejecución de los tests
+    # 1. Ejecución de los tests.
     - name: Run Playwright tests
       run: npx playwright test --project=chromium --project=firefox --project=webkit --reporter=html,junit,json
       env:
         PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
         PLAYWRIGHT_JSON_OUTPUT_NAME: test-results/results.json
 
-   # 2. Generar Reporte Ejecutivo de QA
+   # 2. Generar Reporte Ejecutivo de QA.
     - name: Generar Resumen QA
       if: always()
       run: |
@@ -53,7 +53,7 @@ jobs:
         echo "🔗 Estado Final: $( [ "$FALLOS" -eq 0 ] && echo "PASS ✅" || echo "FAIL ❌" )"
         echo "===================================================="
         # --------------------------
-          
+
     # 3. Webhook para Regresiones (Slack)
     - name: Notificar a Slack
       if: always()
@@ -65,6 +65,7 @@ jobs:
         GITHUB_REPOSITORY: ${{ github.repository }}
         GITHUB_RUN_ID: ${{ github.run_id }}
         GITHUB_REF_NAME: ${{ github.ref_name }}
+        GITHUB_ACTOR: ${{ github.actor }}
 
     # 4. Recolección de evidencias para reportes y Excel
     - name: Subir reportes y resultados para Excel
